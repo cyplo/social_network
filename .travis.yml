@@ -1,5 +1,19 @@
-sudo: false
+sudo: true
 
 language: csharp
-solution: SocialNetwork.sln
+
+mono:
+    - latest
+    - 4.2.4 # default on Fedora 24
+
+install:
+    - sudo pip install behave
+
+env:
+    - BUILD_CONFIGURATION=Release
+    - BUILD_CONFIGURATION=Debug
+
+script:
+    - xbuild /p:Configuration=$BUILD_CONFIGURATION SocialNetwork.sln
+    - behave
 

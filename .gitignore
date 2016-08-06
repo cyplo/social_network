@@ -1,4 +1,6 @@
 [Bb]in/
 [Oo]bj/
 *.userprefs
+packages/
+tmp/
 
