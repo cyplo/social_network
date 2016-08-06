@@ -5,11 +5,11 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle ("SocialNetworkCLI")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyDescription ("Commandline client for the Social Network")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("cyryl")]
+[assembly: AssemblyCopyright ("Cyryl Płotnicki")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
