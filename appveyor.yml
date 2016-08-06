@@ -5,5 +5,5 @@ configuration:
     - Release
 
 build:
-    verbosity: detailed
+    verbosity: normal
 
