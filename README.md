@@ -6,6 +6,9 @@ PRs/issues welcome.
 
 # Building
 
+[![Build Status](https://travis-ci.org/cyplo/social_network.svg?branch=master)](https://travis-ci.org/cyplo/social_network)
+[![Build status](https://ci.appveyor.com/api/projects/status/s73wngt2k6bcf58v/branch/master?svg=true)](https://ci.appveyor.com/project/cyplo/social-network/branch/master)
+
 ## Requirements
 
 * Mono 4.2 / .Net framework 4.5
