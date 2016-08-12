@@ -4,9 +4,10 @@ namespace SocialNetworkCLI
 {
 	class MainClass
 	{
-		public static void Main (string[] args)
+		public static int Main (string[] args)
 		{
-			Console.WriteLine ("Hello World!");
+			Console.In.ReadLine();
+			return 0;
 		}
 	}
 }

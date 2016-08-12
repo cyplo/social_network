@@ -7,3 +7,10 @@ configuration:
 build:
     verbosity: normal
 
+install:
+    - set PATH=C:\Python35-x64\;%PATH%
+    - set PATH=C:\Python35-x64\scripts;%PATH%
+    - pip install behave
+
+test_script:
+    - behave
