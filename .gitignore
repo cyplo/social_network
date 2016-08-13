@@ -3,4 +3,7 @@
 *.userprefs
 packages/
 tmp/
+.vs/
+.idea/
+TestResult.xml
 

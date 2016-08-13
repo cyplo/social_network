@@ -6,7 +6,8 @@ namespace SocialNetworkCLI
 	{
 		public static int Main (string[] args)
 		{
-			Console.In.ReadLine();
+			var looper = new MainLoop(Console.In, Console.Out);
+            looper.Loop();
 			return 0;
 		}
 	}

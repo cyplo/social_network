@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetworkCLI", "SocialNetworkCLI/SocialNetworkCLI.csproj", "{8DBBBADE-1D65-48C5-BBEF-97A1B6F4C2FE}"
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetworkCLI", "SocialNetworkCLI\SocialNetworkCLI.csproj", "{8DBBBADE-1D65-48C5-BBEF-97A1B6F4C2FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetworkTests", "SocialNetworkTests\SocialNetworkTests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,5 +17,12 @@ Global
 		{8DBBBADE-1D65-48C5-BBEF-97A1B6F4C2FE}.Debug|x86.Build.0 = Debug|x86
 		{8DBBBADE-1D65-48C5-BBEF-97A1B6F4C2FE}.Release|x86.ActiveCfg = Release|x86
 		{8DBBBADE-1D65-48C5-BBEF-97A1B6F4C2FE}.Release|x86.Build.0 = Release|x86
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x86.ActiveCfg = Debug|x86
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x86.Build.0 = Debug|x86
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x86.ActiveCfg = Release|x86
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
