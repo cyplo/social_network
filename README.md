@@ -15,12 +15,15 @@ PRs/issues welcome.
 
 # Testing
 
+There are features tests, written using [`behave`](http://pythonhosted.org/behave/).  
+Then there are unit tests, I'm using NUnit here.
+
 ## Feature tests
 
 ### Requirements
-* python  
+* python (python3 recommended)
 
-    `pip install behave`
+    `pip3 install behave`
 
 ### Running
     behave
