@@ -31,7 +31,7 @@ namespace SocialNetworkTests
             var timelineRepositoryMock = new Mock<ITimelineRepository>();
 
             // Act
-            var command = commandFactory.GetCommand(timelineRepositoryMock.Object, null);
+            var command = commandFactory.GetCommand(null, timelineRepositoryMock.Object, null);
 
             // Assert
             Assert.AreEqual(timelineRepositoryMock.Object, command.TimelineRepository);
@@ -45,21 +45,21 @@ namespace SocialNetworkTests
             var username = "some username";
 
             // Act
-            var command = commandFactory.GetCommand(null, username);
+            var command = commandFactory.GetCommand(null, null, username);
 
             // Assert
             Assert.AreEqual(username, command.Username);
         }
 
         [Test]
-        public void Should_PassOnTheCommadArgument()
+        public void Should_PassOnTheCommandArgument()
         {
             // Arrange
             var commandFactory = new PostingCommandFactory();
             var commandArgument = "some argument";
 
             // Act
-            var command = commandFactory.GetCommand(null, null, commandArgument);
+            var command = commandFactory.GetCommand(null, null, null, commandArgument);
 
             // Assert
             Assert.AreEqual(commandArgument, command.Argument);

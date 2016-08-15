@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using SocialNetworkCLI.Repositories;
 
 namespace SocialNetworkCLI.Commands.Reading
 {
     public class ReadingCommand : ICommand
     {
+        public IFollowerRepository FollowerRepository { get; }
         public ITimelineRepository TimelineRepository { get; }
         public string Username { get; }
         public string Argument { get; }
@@ -26,28 +28,9 @@ namespace SocialNetworkCLI.Commands.Reading
             }
 
             var resultTexts = from message in allMessages
-                              select message.Text + " (" + FormatTime(message.Timestamp) + ")";
+                              select new MessageFormatter(message).Format();
             var resultText = string.Join(Environment.NewLine, resultTexts);
             return resultText;
-        }
-
-        // TODO: probably worth extracting the time formatter part to a separate class
-        // TODO: look into using libraries that might do the time => text transformation for us (Humanizer maybe ?)
-        private string FormatTime(DateTime timestamp)
-        {
-            var messageAge = DateTime.Now - timestamp;
-            var ageInMinutes = messageAge.TotalMinutes;
-            if (ageInMinutes < 1)
-            {
-                return "just now";
-            }
-
-            if (ageInMinutes >= 1 && ageInMinutes < 2)
-            {
-                return "1 minute ago";
-            }
-
-            return Math.Floor(ageInMinutes) + " minutes ago";
         }
     }
 }

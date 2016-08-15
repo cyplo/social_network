@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using SocialNetworkCLI;
+using SocialNetworkCLI.Repositories;
 
 namespace SocialNetworkTests
 {
@@ -195,7 +196,6 @@ namespace SocialNetworkTests
             var inputStream = new MemoryStream(inputBytes);
             var rawInputReader = new StreamReader(inputStream);
             var outputWriterMock = new Mock<TextWriter>();
-            string someMessage = null;
             var extractorMock = new Mock<ICommandExtractor>();
             extractorMock.Setup(extractor => extractor.Extract(It.IsAny<string>())).Returns(new NullCommand());
             var looper = new MainLoop(rawInputReader, outputWriterMock.Object, extractorMock.Object);
@@ -232,6 +232,7 @@ namespace SocialNetworkTests
 
         private class NullCommand : ICommand
         {
+            public IFollowerRepository FollowerRepository { get; }
             public ITimelineRepository TimelineRepository { get; }
             public string Username { get; }
             public string Argument { get; }
@@ -244,6 +245,7 @@ namespace SocialNetworkTests
 
         private class AlwaysMessageCommand : ICommand
         {
+            public IFollowerRepository FollowerRepository { get; }
             public ITimelineRepository TimelineRepository { get; }
             public string Username { get; }
             public string Argument { get; }
