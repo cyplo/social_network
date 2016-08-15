@@ -9,9 +9,20 @@ PRs/issues welcome.
 [![Build Status](https://travis-ci.org/cyplo/social_network.svg?branch=master)](https://travis-ci.org/cyplo/social_network)
 [![Build status](https://ci.appveyor.com/api/projects/status/s73wngt2k6bcf58v/branch/master?svg=true)](https://ci.appveyor.com/project/cyplo/social-network/branch/master)
 
+
 ## Requirements
 
 * Mono 4.2 / .Net framework 4.5
+
+## Building on Linux
+
+    nuget restore
+    xbuild /p:Configuration=Releas
+
+## Building on Windows
+
+    nuget restore
+    msbuild /p:Configuration=Release
 
 # Testing
 
@@ -21,12 +32,21 @@ Then there are unit tests, I'm using NUnit here.
 ## Feature tests
 
 ### Requirements
-* python (python3 recommended)
+* python3
 
     `pip3 install behave`
 
-### Running
+### Running feature tests
+
     behave
+
+### Running unit tests under Linux
+
+    mono ./packages/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe SocialNetworkTests/bin/x86/Release/SocialNetworkTests.dll
+
+### Running unit tests under Windows
+
+     packages\NUnit.ConsoleRunner.3.4.1\tools\nunit3-console.exe SocialNetworkTests\bin\x86\Release\SocialNetworkTests.dll
 
 ### A note on the choice of the feature testing framework
 I knew I needed some testing framework that would allow me to write high level tests and launch the final executable against them. This would allow me to mimic the interaction the user has with the binary without skipping layers and calling the C# code directly.

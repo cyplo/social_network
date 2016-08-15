@@ -9,24 +9,45 @@ namespace SocialNetworkCLI
 {
     public class MainLoop
     {
-        private TextReader _inputReader;
+        private readonly TextReader _inputReader;
+        private readonly ICommandExtractor _commandExtractor;
+        private readonly TextWriter _outputWriter;
 
-        public MainLoop(TextReader inputReader, TextWriter outputWriter)
+        public MainLoop(TextReader inputReader, TextWriter outputWriter, ICommandExtractor commandExtractor)
         {
             _inputReader = inputReader;
+            _outputWriter = outputWriter;
+            _commandExtractor = commandExtractor;
         }
 
         public void Loop()
         {
-            var lastLine = string.Empty;
+            var line = string.Empty;
             do
             {
-                lastLine = _inputReader.ReadLine();
-                if(!string.IsNullOrWhiteSpace(lastLine))
+                line = _inputReader.ReadLine();
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    lastLine = lastLine.Trim().ToLower();   
+                    continue;
                 }
-            } while (lastLine != "exit" && lastLine != "quit");
+
+                line = line.Trim();
+                if (line.ToLower() == "exit" || line.ToLower() == "quit")
+                {
+                    break;
+                }
+
+                var command = _commandExtractor.Extract(line);
+                var result = command.Execute();
+                if (string.IsNullOrWhiteSpace(result))
+                {
+                    continue;
+                }
+
+                _outputWriter.Write(result + Environment.NewLine);
+                _outputWriter.Flush();
+
+            } while (true);
         }
     }
 }

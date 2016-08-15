@@ -12,7 +12,7 @@ using SocialNetworkCLI;
 namespace SocialNetworkTests
 {
     [TestFixture]
-    [Timeout(1 * 5000)]
+    [Timeout(5 * 1000)]
     public class MainLoopTests
     {
         [Test]
@@ -21,7 +21,7 @@ namespace SocialNetworkTests
             // Arrange
             var inputReader = new Mock<TextReader>();
             var outputWriter = new Mock<TextWriter>();
-            var looper = new MainLoop(inputReader.Object, outputWriter.Object);
+            var looper = new MainLoop(inputReader.Object, outputWriter.Object, null);
             
             // Assert
             inputReader.Verify( reader => reader.Read(), Times.Never );
@@ -33,7 +33,7 @@ namespace SocialNetworkTests
             // Arrange
             var inputReader = new Mock<TextReader>();
             var outputWriter = new Mock<TextWriter>();
-            var looper = new MainLoop(inputReader.Object, outputWriter.Object);
+            var looper = new MainLoop(inputReader.Object, outputWriter.Object, null);
 
             // Assert
             outputWriter.Verify(writer => writer.Write(It.IsAny<string>()), Times.Never);
@@ -45,7 +45,8 @@ namespace SocialNetworkTests
             // Arrange
             var rawInputReader = new StringReader("exit" + Environment.NewLine);
             var outputWriter = new Mock<TextWriter>();
-            var looper = new MainLoop(rawInputReader, outputWriter.Object);
+            var extractor = new AlwaysNullCommandExtractor();
+            var looper = new MainLoop(rawInputReader, outputWriter.Object, extractor);
 
             // Act
             looper.Loop();
@@ -60,7 +61,8 @@ namespace SocialNetworkTests
             // Arrange
             var rawInputReader = new StringReader("quit" + Environment.NewLine);
             var outputWriter = new Mock<TextWriter>();
-            var looper = new MainLoop(rawInputReader, outputWriter.Object);
+            var extractor = new AlwaysNullCommandExtractor();
+            var looper = new MainLoop(rawInputReader, outputWriter.Object, extractor);
 
             // Act
             looper.Loop();
@@ -75,7 +77,8 @@ namespace SocialNetworkTests
             // Arrange
             var rawInputReader = new StringReader("eXiT" + Environment.NewLine);
             var outputWriter = new Mock<TextWriter>();
-            var looper = new MainLoop(rawInputReader, outputWriter.Object);
+            var extractor = new AlwaysNullCommandExtractor();
+            var looper = new MainLoop(rawInputReader, outputWriter.Object, extractor);
 
             // Act
             looper.Loop();
@@ -98,15 +101,167 @@ namespace SocialNetworkTests
             var inputStream = new MemoryStream(inputBytes);
             var rawInputReader = new StreamReader(inputStream);
             var outputWriter = new Mock<TextWriter>();
-            var looper = new MainLoop(rawInputReader, outputWriter.Object);
+            var extractor = new AlwaysNullCommandExtractor();
+            var looper = new MainLoop(rawInputReader, outputWriter.Object, extractor);
 
             // Act
             looper.Loop();
 
             // Assert 
-            Assert.IsTrue(inputStream.Position > 0);
-            Assert.AreEqual(inputStream.Length, inputStream.Position);
+            Assert.GreaterOrEqual(inputStream.Position, inputBytes.Length);
         }
+
+        [Test]
+        public void Should_ConsumeAllEmptyLines_BeforeExiting()
+        {
+            // Arrange
+            var inputBuilder = new StringBuilder();
+            inputBuilder.AppendLine();
+            inputBuilder.AppendLine();
+            inputBuilder.AppendLine();
+            inputBuilder.AppendLine();
+            inputBuilder.AppendLine("exit");
+
+            var inputBytes = Encoding.UTF8.GetBytes(inputBuilder.ToString());
+            var inputStream = new MemoryStream(inputBytes);
+            var rawInputReader = new StreamReader(inputStream);
+            var outputWriter = new Mock<TextWriter>();
+            var extractor = new AlwaysNullCommandExtractor();
+            var looper = new MainLoop(rawInputReader, outputWriter.Object, extractor);
+
+            // Act
+            looper.Loop();
+
+            // Assert 
+            Assert.GreaterOrEqual(inputStream.Position, inputBytes.Length);
+        }
+
+        [Test]
+        public void Should_WriteCommandOutputToOutputWriter()
+        {
+            // Arrange
+            var inputBuilder = new StringBuilder();
+            inputBuilder.AppendLine("some command");
+            inputBuilder.AppendLine("exit");
+
+            var inputBytes = Encoding.UTF8.GetBytes(inputBuilder.ToString());
+            var inputStream = new MemoryStream(inputBytes);
+            var rawInputReader = new StreamReader(inputStream);
+            var outputWriterMock = new Mock<TextWriter>();
+            var someMessage = "some message"; 
+            var extractor = new AlwaysMessageCommandExtractor(someMessage);
+            var looper = new MainLoop(rawInputReader, outputWriterMock.Object, extractor);
+
+            // Act
+            looper.Loop();
+
+            // Assert
+            outputWriterMock.Verify( writer => writer.Write( someMessage + Environment.NewLine ), Times.Once );
+        }
+
+        [Test]
+        public void ShouldNot_WriteNullCommandOutputToOutputWriter()
+        {
+            // Arrange
+            var inputBuilder = new StringBuilder();
+            inputBuilder.AppendLine("some command");
+            inputBuilder.AppendLine("exit");
+
+            var inputBytes = Encoding.UTF8.GetBytes(inputBuilder.ToString());
+            var inputStream = new MemoryStream(inputBytes);
+            var rawInputReader = new StreamReader(inputStream);
+            var outputWriterMock = new Mock<TextWriter>();
+            string someMessage = null;
+            var extractor = new AlwaysMessageCommandExtractor(someMessage);
+            var looper = new MainLoop(rawInputReader, outputWriterMock.Object, extractor);
+
+            // Act
+            looper.Loop();
+
+            // Assert
+            outputWriterMock.Verify(writer => writer.Write(someMessage + Environment.NewLine), Times.Never);
+        }
+
+        [Test]
+        public void ShouldNot_ChangeTheCaseOfTheLinePassed()
+        {
+            // Arrange
+            var inputBuilder = new StringBuilder();
+            var line = "SOME Command";
+            inputBuilder.AppendLine(line);
+            inputBuilder.AppendLine("exit");
+
+            var inputBytes = Encoding.UTF8.GetBytes(inputBuilder.ToString());
+            var inputStream = new MemoryStream(inputBytes);
+            var rawInputReader = new StreamReader(inputStream);
+            var outputWriterMock = new Mock<TextWriter>();
+            string someMessage = null;
+            var extractorMock = new Mock<ICommandExtractor>();
+            extractorMock.Setup(extractor => extractor.Extract(It.IsAny<string>())).Returns(new NullCommand());
+            var looper = new MainLoop(rawInputReader, outputWriterMock.Object, extractorMock.Object);
+
+            // Act
+            looper.Loop();
+
+            // Assert
+            extractorMock.Verify( extractor => extractor.Extract(line), Times.Once);
+        }
+
+        private class AlwaysNullCommandExtractor : ICommandExtractor
+        {
+            public ICommand Extract(string line)
+            {
+                return new NullCommand();
+            }
+        }
+
+        private class AlwaysMessageCommandExtractor : ICommandExtractor
+        {
+            private readonly string _message;
+
+            public AlwaysMessageCommandExtractor(string message)
+            {
+                _message = message;
+            }
+
+            public ICommand Extract(string line)
+            {
+                return new AlwaysMessageCommand(_message);
+            }
+        }
+
+        private class NullCommand : ICommand
+        {
+            public ITimelineRepository TimelineRepository { get; }
+            public string Username { get; }
+            public string Argument { get; }
+
+            public string Execute()
+            {
+                return null;
+            }
+        }
+
+        private class AlwaysMessageCommand : ICommand
+        {
+            public ITimelineRepository TimelineRepository { get; }
+            public string Username { get; }
+            public string Argument { get; }
+
+            private readonly string _message;
+
+            public AlwaysMessageCommand(string message)
+            {
+                _message = message;
+            }
+
+            public string Execute()
+            {
+                return _message;
+            }
+        }
+
+
 
     }
 }
