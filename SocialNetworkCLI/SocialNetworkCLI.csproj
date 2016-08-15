@@ -36,9 +36,19 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandExtractor.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\ICommandExtractor.cs" />
+    <Compile Include="Commands\posting\PostingCommandFactory.cs" />
+    <Compile Include="Commands\reading\ReadingCommandFactory.cs" />
+    <Compile Include="Repositories\ITimelineRepository.cs" />
     <Compile Include="MainLoop.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="Commands\posting\PostingCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Commands\reading\ReadingCommand.cs" />
+    <Compile Include="Repositories\TimelineRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
