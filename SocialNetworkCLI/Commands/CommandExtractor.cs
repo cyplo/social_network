@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SocialNetworkCLI.Repositories;
 
 namespace SocialNetworkCLI
 {
     public class CommandExtractor : ICommandExtractor
     {
+        private readonly IFollowerRepository _followerRepository;
         private readonly ITimelineRepository _timelineRepository;
         private readonly IList<ICommandFactory> _availableCommandFactories;
         private readonly ICommandFactory _defaultCommandFactory;
 
-        public CommandExtractor(ITimelineRepository timelineRepository, IList<ICommandFactory> availableCommandFactories, ICommandFactory defaultCommandFactory){
+        public CommandExtractor(IFollowerRepository followerRepository, ITimelineRepository timelineRepository, IList<ICommandFactory> availableCommandFactories, ICommandFactory defaultCommandFactory)
+        {
+            _followerRepository = followerRepository;
             _timelineRepository = timelineRepository;
             _availableCommandFactories = availableCommandFactories;
             _defaultCommandFactory = defaultCommandFactory;
@@ -39,7 +43,7 @@ namespace SocialNetworkCLI
                 argument = lineParts[1].Trim();
             }
 
-            return factory.GetCommand(_timelineRepository, username, argument);
+            return factory.GetCommand(_followerRepository, _timelineRepository, username, argument);
         }
     }
 }

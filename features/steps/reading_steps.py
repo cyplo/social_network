@@ -1,4 +1,3 @@
-import time
 from behave import *
 
 @then(u'I should see "{text}"')

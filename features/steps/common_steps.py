@@ -1,5 +1,6 @@
 import time
 import os
+from behave import *
 
 @when(u'I type "{text}"')
 @when(u'They type "{text}"')

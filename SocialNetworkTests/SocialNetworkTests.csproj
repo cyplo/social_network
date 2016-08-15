@@ -68,14 +68,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandExtractorTests.cs" />
+    <Compile Include="FollowerRepositoryTests.cs" />
     <Compile Include="MainLoopCommandExecutionTests.cs" />
     <Compile Include="MainLoopTests.cs" />
-    <Compile Include="PostingCommandFactoryTests.cs" />
-    <Compile Include="PostingCommandTests.cs" />
+    <Compile Include="Posting\PostingCommandFactoryTests.cs" />
+    <Compile Include="Posting\PostingCommandTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadingCommandFactoryTests.cs" />
-    <Compile Include="ReadingCommandTest.cs" />
+    <Compile Include="Reading\ReadingCommandFactoryTests.cs" />
+    <Compile Include="Reading\ReadingCommandTest.cs" />
     <Compile Include="TimelineRepositoryTests.cs" />
+    <Compile Include="Wall\FollowingCommandFactoryTests.cs" />
+    <Compile Include="Wall\FollowingCommandTests.cs" />
+    <Compile Include="Wall\WallCommandFactoryTests.cs" />
+    <Compile Include="Wall\WallCommandTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

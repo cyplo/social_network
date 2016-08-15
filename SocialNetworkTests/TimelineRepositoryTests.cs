@@ -83,7 +83,7 @@ namespace SocialNetworkTests
             var allMessages = repository.Read(username);
             Assert.AreEqual(1, allMessages.Count());
             var message = allMessages.First();
-            Assert.GreaterOrEqual(now, message.Timestamp);
+            Assert.GreaterOrEqual(message.Timestamp, now);
             Assert.LessOrEqual(message.Timestamp, now + TimeSpan.FromSeconds(1));
         }
 
